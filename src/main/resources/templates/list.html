@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+ <div th:fragment="content">
+ <!-- Header -->
+ <div class="d-flex justify-content-between align-items-center mb-4">
+ <div>
+ <h1 class="h3 mb-0">
+ <i class="fas fa-boxes text-primary me-2"></i>
+ <span th:if="${category}">[[${category}]] books</span>
+ <span th:if="${keyword}">Search Results for "[[$
+{keyword}]]"</span>
+ </h1>
+ <p class="text-muted mb-0" th:text="'Total: ' + ${totalProducts} +
+' books'"></p>
+ </div>
+ <a th:href="@{/books/new}" class="btn btn-primary">
+ <i class="fas fa-plus me-2"></i>Add New book
+ </a>
+ </div>
+ <!-- Product Cards -->
+ <div th:if="${books.empty}">
+ <div class="alert alert-info">
+ <i class="fas fa-info-circle me-2"></i>
+ No books found.
+ <a th:href="@{/books/new}">Add your first book!</a>
+ </div>
+ </div>
+ <div th:unless="${books.empty}" class="row">
+ <div th:each="book : ${books}" class="col-md-6 col-lg-4 mb-4">
+ <div class="card h-100">
+16
+ <div class="card-body">
+ <div class="d-flex justify-content-between align-itemsstart">
+ <h5 class="card-title text-primary" th:text="$
+{book.title}"></h5>
+ <span class="badge bg-primary" th:text="$
+{book.category}"></span>
+ </div>
+ <p class="card-text text-muted small" th:text="$
+{book.description}"></p>
+ <div class="mb-3">
+ <span class="fw-bold">Price: </span>
+ <span class="text-success" th:text="'$' + $
+{#numbers.formatDecimal(book.price, 1, 2)}"></span>
+ <br>
+ </div>
+ <div class="d-flex justify-content-between">
+ <a th:href="@{/books/edit/{id}(id=${book.id})}"
+ class="btn btn-sm btn-outline-primary">
+ <i class="fas fa-edit me-1"></i>Edit
+ </a>
+ <button class="btn btn-sm btn-outline-danger"
+ onclick="">
+<!-- confirmDelete([[${book.id}]]) -->
+ <i class="fas fa-trash me-1"></i>Delete
+ </button>
+ </div>
+ </div>
+ <div class="card-footer text-muted small">
+ Last updated:
+ <span th:text="${#temporals.format(book.updatedAt,
+'dd/MM/yyyy HH:mm')}"></span>
+ </div>
+ </div>
+ </div>
+ </div>
+ <!-- Product Table (Alternative View) -->
+ <div class="card mt-4">
+ <div class="card-header">
+ <h5 class="mb-0"><i class="fas fa-table me-2"></i>Product
+List</h5>
+ </div>
+ <div class="card-body">
+ <div class="table-responsive">
+ <table class="table table-hover">
+ <thead>
+ <tr>
+ <th>ID</th>
+ <th>Title</th>
+ <th>Category</th>
+ <th>Price</th>
+ <th>Created</th>
+ <th>Actions</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr th:each="book : ${books}">
+ <td th:text="${book.id}"></td>
+ <td>
+17
+ <span class="badge bg-primary" th:text="$
+{book.category}"></span>
+ </td>
+ <td class="text-success fw-bold"
+ th:text="'$' + $
+{#numbers.formatDecimal(book.price, 1, 2)}"></td>
+ <td>
+ <span th:class="${book.quantity > 10 ? 'textsuccess' : 'text-danger'}"
+ th:text="${book.quantity}"></span>
+ </td>
+ <td th:text="${#temporals.format(book.createdAt,
+'dd/MM/yyyy')}"></td>
+ <td>
+ <div class="btn-group btn-group-sm">
+ <a th:href="@{/books/edit/{id}(id=$
+{book.id})}"
+ class="btn btn-outline-primary">
+ <i class="fas fa-edit"></i>
+ </a>
+ <button class="btn btn-outline-danger"
+ onclick="">
+<!-- confirmDelete([[${book.id}]])
+-->
+ <i class="fas fa-trash"></i>
+ </button>
+ </div>
+ </td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+ </div>
+ </div>
+ </div>
+</body>
+</html>

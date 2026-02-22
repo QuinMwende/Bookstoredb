@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+12
+<html xmlns:th="http://www.thymeleaf.org"
+ th:replace="layout :: html">
+<body>
+ <div th:fragment="content">
+ <div class="row justify-content-center">
+ <div class="col-md-8 col-lg-6">
+ <div class="card">
+ <div class="card-header bg-warning text-dark">
+ <h4 class="mb-0">
+ <i class="fas fa-edit me-2"></i>Edit Product
+ <small class="float-end">ID: <span th:text="$
+{book.id}"></span></small>
+ </h4>
+ </div>
+ <div class="card-body">
+ <form th:action="@{/books/update/{id}(id=${book.id})}"
+ th:object="${book}"
+ method="post"
+ id="editForm">
+ <!-- Name Field -->
+ <div class="mb-3">
+ <label for="title" class="form-label">Book Title
+*</label>
+ <input type="text"
+ class="form-control"
+ id="title"
+ th:field="*{title}"
+ required>
+ <div class="text-danger"
+ th:if="${#fields.hasErrors('title')}"
+ th:errors="*{title}"></div>
+ </div>
+ <!-- Category Field -->
+ <div class="mb-3">
+ <label for="category" class="form-label">Category
+*</label>
+ <select class="form-select"
+ id="category"
+ th:field="*{category}"
+ required>
+ <option th:each="cat : ${categories}"
+ th:value="${cat}"
+ th:text="${cat}"
+ th:selected="${cat ==
+book.category}"></option>
+ </select>
+ <div class="text-danger"
+ th:if="${#fields.hasErrors('category')}"
+ th:errors="*{category}"></div>
+ </div>
+ <!-- Timestamps -->
+ <div class="row text-muted small">
+ <div class="col-md-6">
+ <p>Created: <span th:text="$
+{#temporals.format(book.createdAt, 'dd/MM/yyyy HH:mm:ss')}"></span></p>
+ </div>
+ <div class="col-md-6">
+ <p>Last Updated: <span th:text="$
+{#temporals.format(book.updatedAt, 'dd/MM/yyyy HH:mm:ss')}"></span></p>
+13
+ </div>
+ </div>
+ <!-- Form Actions -->
+ <div class="d-flex justify-content-between mt-4">
+ <a th:href="@{/books}" class="btn btn-secondary">
+ <i class="fas fa-times me-1"></i>Cancel
+ </a>
+ <div>
+ <button type="button"
+ class="btn btn-danger me-2"
+ onclick="">
+<!-- confirmDelete([[${book.id}]]) -->
+ <i class="fas fa-trash me-1"></i>Delete
+ </button>
+ <button type="submit" class="btn btn-warning">
+ <i class="fas fa-save me-1"></i>Update
+Product
+ </button>
+ </div>
+ </div>
+ </form>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+</body>
+</html>
